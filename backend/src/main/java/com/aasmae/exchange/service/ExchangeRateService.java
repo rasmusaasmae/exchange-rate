@@ -1,15 +1,17 @@
 package com.aasmae.exchange.service;
 
+import com.aasmae.exchange.domain.ConversionDTO;
 import com.aasmae.exchange.domain.ExchangeRate;
 import com.aasmae.exchange.domain.ExchangeRateDTO;
 import com.aasmae.exchange.repository.ExchangeRateRepository;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.springframework.web.reactive.function.client.WebClient;
 
-
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +21,49 @@ import java.util.List;
 public class ExchangeRateService {
 
     private final XmlMapper xmlMapper = new XmlMapper();
-    private final ExchangeRateRepository exchangeRateRepository;
     private final WebClient webClient;
+    private final ExchangeRateRepository exchangeRateRepository;
+
+    public ConversionDTO convert(String from, String to, double amount) {
+        BigDecimal conversionRate;
+        if (from.equals("EUR") || to.equals("EUR")) {
+            try {
+                conversionRate = getConversionRateWithEur(from, to);
+            } catch (RuntimeException e) {
+                throw new RuntimeException("Failed to convert from " + from + " to " + to);
+            }
+        } else {
+            ExchangeRate fromRate = exchangeRateRepository.findFirstByCurrencyOrderByDateDesc(from).orElseThrow(() -> new NullPointerException("Exchange rate not found: " + from));
+            ExchangeRate toRate = exchangeRateRepository.findFirstByCurrencyOrderByDateDesc(to).orElseThrow(() -> new NullPointerException("Exchange rate not found: " + to));
+            if (!fromRate.getDate().equals(toRate.getDate())) {
+                throw new DateTimeException("Exchange rates dates do not match");
+            }
+            conversionRate = toRate.getRate().divide(fromRate.getRate(), 4, RoundingMode.CEILING);
+        }
+        BigDecimal convertedAmount = BigDecimal.valueOf(amount).multiply(conversionRate);
+        return new ConversionDTO(convertedAmount, conversionRate);
+    }
+
+    private BigDecimal getConversionRateWithEur(String from, String to) {
+        if (from.equals("EUR") && to.equals("EUR")) return BigDecimal.ONE;
+
+        if (from.equals("EUR")) {
+            ExchangeRate toRate = exchangeRateRepository.findFirstByCurrencyOrderByDateDesc(to)
+                    .orElseThrow(() -> new NullPointerException("Exchange rate not found: " + to));
+            return toRate.getRate();
+        } else if (to.equals("EUR")) {
+            ExchangeRate fromRate = exchangeRateRepository.findFirstByCurrencyOrderByDateDesc(from)
+                    .orElseThrow(() -> new NullPointerException("Exchange rate not found: " + from));
+            return BigDecimal.ONE.divide(fromRate.getRate(), 4, RoundingMode.CEILING);
+        }
+        throw new RuntimeException("At least one argument must be EUR");
+    }
+
+    public List<String> getAllCurrencies() {
+        List<String> currencies = exchangeRateRepository.getAllCurrencies();
+        currencies.add("EUR");
+        return currencies;
+    }
 
     public void populateExchangeRates() {
         String url = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
