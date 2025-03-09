@@ -8,3 +8,9 @@ export const conversionResultSchema = z.object({
   rate: z.number(),
 });
 export type ConversionResult = z.infer<typeof conversionResultSchema>;
+
+export const currencyGrowthSchema = z.object({
+  currency: currencySchema,
+  growthRate: z.number(),
+});
+export type CurrencyGrowth = z.infer<typeof currencyGrowthSchema>;

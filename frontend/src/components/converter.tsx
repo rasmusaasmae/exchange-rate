@@ -1,7 +1,6 @@
 "use client";
 
 import { convert } from "@/api/convert";
-import { getCurrencies } from "@/api/get-currencies";
 import { Currency } from "@/api/schemas";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,20 +11,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
+import { XIcon } from "lucide-react";
 import { useState } from "react";
 import { Label } from "./ui/label";
-import { XIcon } from "lucide-react";
 
-const Converter = () => {
+type ConverterProps = {
+  currencies: Currency[];
+};
+
+const Converter = (props: ConverterProps) => {
+  const { currencies } = props;
   const [from, setFrom] = useState<Currency>("EUR");
   const [to, setTo] = useState<Currency>("USD");
   const [amountStr, setAmountStr] = useState<string>("");
   const amount = isNaN(parseFloat(amountStr)) ? 0 : parseFloat(amountStr);
-
-  const { data: currencies } = useQuery({
-    queryKey: ["currencies"],
-    queryFn: () => getCurrencies(),
-  });
 
   const { data: converted } = useQuery({
     queryKey: ["convert", from, to, amount],
@@ -33,11 +32,11 @@ const Converter = () => {
   });
 
   return (
-    <div className="flex flex-col space-y-4 border rounded-md p-4 border-emerald-500 shadow-xl shadow-emerald-500">
+    <div className="flex flex-col w-full max-w-xl items-center space-y-4 border rounded-md p-10  border-emerald-500 shadow-xl shadow-emerald-500">
       <h1 className="text-2xl font-bold">Currency converter</h1>
       <div className="flex flex-col space-y-2">
         <Label htmlFor="amount">Convert</Label>
-        <div className="flex w-full max-w-sm items-center space-x-2">
+        <div className="flex w-full items-center space-x-2">
           <Input
             id="amount"
             inputMode="decimal"
@@ -69,11 +68,14 @@ const Converter = () => {
         <span>Conversion rate</span>
       </div>
       <div className="flex flex-col space-y-2">
-        <p>Adding to</p>
-        <div className="flex w-full max-w-sm items-center space-x-2">
-          <p className="flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base">
-            {converted?.amount.toFixed(2)}
-          </p>
+        <Label htmlFor="converted">Adding to</Label>
+        <div className="flex w-full items-center space-x-2">
+          <Input
+            id="converted"
+            value={converted?.amount.toFixed(2) ?? ""}
+            disabled
+            className="disabled:opacity-100"
+          />
           <Select value={to} onValueChange={setTo}>
             <SelectTrigger className="w-24 cursor-pointer">
               <SelectValue />
