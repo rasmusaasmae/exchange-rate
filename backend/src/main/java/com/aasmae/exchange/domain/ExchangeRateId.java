@@ -14,4 +14,5 @@ public class ExchangeRateId implements Serializable {
 
     private String currency;
     private LocalDate date;
+
 }

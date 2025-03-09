@@ -33,8 +33,10 @@ public class ExchangeRateService {
                 throw new RuntimeException("Failed to convert from " + from + " to " + to);
             }
         } else {
-            ExchangeRate fromRate = exchangeRateRepository.findFirstByCurrencyOrderByDateDesc(from).orElseThrow(() -> new NullPointerException("Exchange rate not found: " + from));
-            ExchangeRate toRate = exchangeRateRepository.findFirstByCurrencyOrderByDateDesc(to).orElseThrow(() -> new NullPointerException("Exchange rate not found: " + to));
+            ExchangeRate fromRate = exchangeRateRepository.findFirstByCurrencyOrderByDateDesc(from)
+                    .orElseThrow(() -> new NullPointerException("Exchange rate not found: " + from));
+            ExchangeRate toRate = exchangeRateRepository.findFirstByCurrencyOrderByDateDesc(to)
+                    .orElseThrow(() -> new NullPointerException("Exchange rate not found: " + to));
             if (!fromRate.getDate().equals(toRate.getDate())) {
                 throw new DateTimeException("Exchange rates dates do not match");
             }
@@ -57,12 +59,6 @@ public class ExchangeRateService {
             return BigDecimal.ONE.divide(fromRate.getRate(), 4, RoundingMode.CEILING);
         }
         throw new RuntimeException("At least one argument must be EUR");
-    }
-
-    public List<String> getAllCurrencies() {
-        List<String> currencies = exchangeRateRepository.getAllCurrencies();
-        currencies.add("EUR");
-        return currencies;
     }
 
     public void populateExchangeRates() {
@@ -102,4 +98,5 @@ public class ExchangeRateService {
             throw new RuntimeException("Error parsing XML", e);
         }
     }
+
 }

@@ -4,12 +4,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import lombok.Data;
+
 import java.util.List;
 
 @Data
 @JacksonXmlRootElement(localName = "Envelope")
 public class ExchangeRateDTO {
-
 
     @JacksonXmlProperty(localName = "subject")
     private String subject;
@@ -52,4 +52,5 @@ public class ExchangeRateDTO {
         @JacksonXmlProperty(isAttribute = true)
         private String rate;
     }
+
 }

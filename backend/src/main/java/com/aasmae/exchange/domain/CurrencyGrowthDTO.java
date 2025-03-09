@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
-public class ConversionDTO {
+public class CurrencyGrowthDTO {
 
-    private BigDecimal amount;
-    private BigDecimal rate;
+    private String currency;
+    private BigDecimal growthRate;
 
 }
