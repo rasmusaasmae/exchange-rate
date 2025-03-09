@@ -15,7 +15,10 @@ export default async function Home() {
           description="Top 5 currencies with the highest highest growth and decline over a 10-day period in the last 90 days"
           className="order-3 xl:order-1"
         />
-        <Converter currencies={currencies} className="order-1 xl:order-2" />
+        <Converter
+          currencies={currencies}
+          className="order-1 xl:order-2 xl:scale-110"
+        />
         <Growth
           currencyGrowths={currencyGrowths}
           title="Growing currencies"

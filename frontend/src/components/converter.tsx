@@ -35,13 +35,13 @@ const Converter = (props: ConverterProps) => {
   return (
     <div
       className={cn(
-        "flex w-full max-w-xl flex-col items-center space-y-4 rounded-md border border-emerald-500 p-10 shadow-xl shadow-emerald-500",
+        "flex w-full max-w-xl flex-col items-center space-y-4 rounded-md border border-emerald-500 p-4 shadow-2xl shadow-emerald-500",
         className,
       )}
       {...rest}
     >
       <h1 className="text-2xl font-bold">Currency converter</h1>
-      <div className="flex flex-col space-y-2">
+      <div className="flex w-full max-w-md flex-col space-y-2">
         <Label htmlFor="amount">Convert</Label>
         <div className="flex w-full items-center space-x-2">
           <Input
@@ -67,14 +67,14 @@ const Converter = (props: ConverterProps) => {
           </Select>
         </div>
       </div>
-      <div className="flex w-full max-w-sm items-center justify-between space-x-2 text-neutral-300">
+      <div className="flex w-full max-w-md items-center justify-between space-x-2 text-neutral-300">
         <span className="flex flex-row items-center space-x-1 text-emerald-500">
           <XIcon className="h-4 w-4" />
           <span>{converted?.rate}</span>
         </span>
         <span>Conversion rate</span>
       </div>
-      <div className="flex flex-col space-y-2">
+      <div className="flex w-full max-w-md flex-col space-y-2">
         <Label htmlFor="converted">Adding to</Label>
         <div className="flex w-full items-center space-x-2">
           <Input
