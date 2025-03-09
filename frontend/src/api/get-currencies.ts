@@ -8,7 +8,7 @@ export const getCurrencies = async (): Promise<Currency[]> => {
       headers: {
         Accept: "application/json",
       },
-    }
+    },
   );
   const data = await response.json();
   const currencies = z.array(currencySchema).parse(data);
