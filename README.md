@@ -2,7 +2,7 @@
 
 This project implements a frontend and a backend for an exchange rate API.
 
-![Frontend](examples/frontend.png)
+![Frontend](assets/frontend.png)
 
 ## Technologies
 
