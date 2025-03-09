@@ -6,9 +6,9 @@ This project implements a frontend and a backend for an exchange rate API.
 
 ## Technologies
 
-**Frontend**: Next.js, React, TypeScript
+**Frontend**: Next.js, React, TypeScript, TailwindCSS, shadcn/ui
 
-**Backend**: Spring Boot, Java
+**Backend**: Spring Boot, Java, JPA, Quartz, Jackson, Lombok, H2 Database
 
 ## Features
 
@@ -24,8 +24,16 @@ This project implements a frontend and a backend for an exchange rate API.
 
 Due to time constraints, no tests were implemented.
 
+## Requirements
+
+**Frontend**: [Node.js](https://nodejs.org/), [pnpm](https://pnpm.io/)
+
+**Backend**: [Java 21+](https://www.oracle.com/java/)
+
 ## Running the Project
 
 There are run scripts for both the frontend and backend in the `scripts` folder.
 
 The frontend requires the API URL to be provided via an environment variable. There is an example environment file given in `frontend/.env.example`. You can make a copy of this to `frontend/.env`.
+
+By default backend runs on port `8080` and frontend on `3000`.
