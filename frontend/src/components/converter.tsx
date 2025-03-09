@@ -14,13 +14,14 @@ import { useQuery } from "@tanstack/react-query";
 import { XIcon } from "lucide-react";
 import { useState } from "react";
 import { Label } from "./ui/label";
+import { cn } from "@/lib/utils";
 
 type ConverterProps = {
   currencies: Currency[];
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const Converter = (props: ConverterProps) => {
-  const { currencies } = props;
+  const { currencies, className, ...rest } = props;
   const [from, setFrom] = useState<Currency>("EUR");
   const [to, setTo] = useState<Currency>("USD");
   const [amountStr, setAmountStr] = useState<string>("");
@@ -32,7 +33,13 @@ const Converter = (props: ConverterProps) => {
   });
 
   return (
-    <div className="flex w-full max-w-xl flex-col items-center space-y-4 rounded-md border border-emerald-500 p-10 shadow-xl shadow-emerald-500">
+    <div
+      className={cn(
+        "flex w-full max-w-xl flex-col items-center space-y-4 rounded-md border border-emerald-500 p-10 shadow-xl shadow-emerald-500",
+        className,
+      )}
+      {...rest}
+    >
       <h1 className="text-2xl font-bold">Currency converter</h1>
       <div className="flex flex-col space-y-2">
         <Label htmlFor="amount">Convert</Label>

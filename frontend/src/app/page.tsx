@@ -9,9 +9,19 @@ export default async function Home() {
   return (
     <main className="grid min-h-screen w-full place-items-center p-4 xl:p-20">
       <div className="grid grid-cols-1 gap-16 xl:grid-cols-3">
-        <div className="hidden sm:block" />
-        <Converter currencies={currencies} />
-        <Growth currencyGrowths={currencyGrowths} />
+        <Growth
+          currencyGrowths={[]}
+          title="Changing currencies"
+          description="Top 5 currencies with the highest highest growth and decline over a 10-day period in the last 90 days"
+          className="order-3 xl:order-1"
+        />
+        <Converter currencies={currencies} className="order-1 xl:order-2" />
+        <Growth
+          currencyGrowths={currencyGrowths}
+          title="Growing currencies"
+          description="Top 5 currencies with the highest growth in the last 10 days"
+          className="order-2 xl:order-3"
+        />
       </div>
     </main>
   );

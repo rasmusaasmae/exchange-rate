@@ -3,17 +3,23 @@ import { cn } from "@/lib/utils";
 
 type GrowthProps = {
   currencyGrowths: CurrencyGrowth[];
-};
+  title: string;
+  description: string;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const Growth = (props: GrowthProps) => {
-  const { currencyGrowths } = props;
+  const { currencyGrowths, title, description, className, ...rest } = props;
 
   return (
-    <div className="flex w-full max-w-xl flex-col items-center rounded-md border border-emerald-500 p-4">
-      <h1 className="mb-4 text-2xl font-bold">Top 5 currencies</h1>
-      <p className="mb-4 text-sm text-neutral-500">
-        Currencies with the highest growth in the last 10 days
-      </p>
+    <div
+      className={cn(
+        "flex w-full max-w-xl flex-col items-center rounded-md border border-emerald-500 p-4",
+        className,
+      )}
+      {...rest}
+    >
+      <h1 className="mb-4 text-2xl font-bold">{title}</h1>
+      <p className="mb-4 text-sm text-neutral-500">{description}</p>
       <ul className="flex w-fit flex-col space-y-2">
         {currencyGrowths.map((growth) => (
           <li
