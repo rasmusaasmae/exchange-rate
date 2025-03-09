@@ -74,6 +74,19 @@ public class ExchangeRateService {
         exchangeRateRepository.saveAll(exchangeRates);
     }
 
+    public void saveLatestExchangeRates() {
+        String url = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
+        String xmlResponse = webClient
+                .get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        List<ExchangeRate> exchangeRates = parseResponse(xmlResponse);
+        exchangeRateRepository.saveAll(exchangeRates);
+    }
+
     private List<ExchangeRate> parseResponse(String xmlResponse) {
         try {
             ExchangeRateDTO response = xmlMapper.readValue(xmlResponse, ExchangeRateDTO.class);
