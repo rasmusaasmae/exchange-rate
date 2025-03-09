@@ -2,6 +2,8 @@
 
 This project implements a frontend and a backend for an exchange rate API.
 
+![Frontend](examples/frontend.png)
+
 ## Technologies
 
 **Frontend**: Next.js, React, TypeScript
